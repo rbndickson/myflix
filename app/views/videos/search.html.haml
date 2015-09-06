@@ -1,0 +1,7 @@
+%h5= "Search results for '#{@query}'"
+%hr
+.videos.row
+  - @results.each do |video|
+    .video.col-sm-2
+      = link_to video_path(video), nil do
+        = image_tag video.small_cover_url
