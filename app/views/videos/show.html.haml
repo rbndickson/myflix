@@ -6,7 +6,7 @@
       .video_info.col-sm-3
         %header
           %h3= @video.title
-          %h4= @video.category.name
+          %h4=link_to @video.category.name, category_path(@video.category)
           %span Rating: 4.5/5.0
         %p= @video.description
         .actions
