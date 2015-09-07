@@ -1,10 +1,10 @@
-# Image sizes: 166 * 236, 665 *375
+# Image sizes: 166 * 236, 665 * 375
 
-comedy = Category.create(name: 'Comedy')
-reality = Category.create(name: 'Reality')
-animation = Category.create(name: 'Animation')
+comedy = Category.create!(name: 'Comedy')
+reality = Category.create!(name: 'Reality')
+animation = Category.create!(name: 'Animation')
 
-Video.create(
+Video.create!(
   title: 'The Office',
   description: 'Comedy about British office life',
   small_cover_url: '/tmp/office.jpg',
@@ -12,7 +12,7 @@ Video.create(
   category: comedy
 )
 
-Video.create(
+Video.create!(
   title: 'The Amazing Race',
   description: 'Contestants race around the world completing various challenges',
   small_cover_url: '/tmp/amazing_race.jpg',
@@ -20,7 +20,7 @@ Video.create(
   category: reality
 )
 
-Video.create(
+Video.create!(
   title: 'Avatar - The Last Airbender',
   description: 'The Avatar must master all 4 elements on his quest to save the world',
   small_cover_url: '/tmp/avatar.jpg',
@@ -28,7 +28,7 @@ Video.create(
   category: animation
 )
 
-Video.create(
+Video.create!(
   title: 'South Park',
   description: 'Four kids struggle with the pains of growing up',
   small_cover_url: '/tmp/south_park.jpg',
@@ -36,7 +36,7 @@ Video.create(
   category: comedy
   )
 
-Video.create(
+Video.create!(
   title: 'Monk',
   description: 'I have no idea!',
   small_cover_url: '/tmp/monk.jpg',
@@ -44,7 +44,7 @@ Video.create(
   category: comedy
   )
 
-Video.create(
+Video.create!(
   title: 'Futurama',
   description: 'Robots, aliens and humans live together in the future',
   small_cover_url: '/tmp/futurama.jpg',
@@ -52,7 +52,7 @@ Video.create(
   category: comedy
   )
 
-Video.create(
+Video.create!(
   title: 'Family Guy',
   description: 'A crazy family with a talking dog and talking baby',
   small_cover_url: '/tmp/family_guy.jpg',
@@ -60,7 +60,7 @@ Video.create(
   category: comedy
   )
 
-Video.create(
+Video.create!(
   title: 'Blackadder',
   description: 'Comedy through history',
   small_cover_url: '/tmp/blackadder.jpg',
@@ -68,7 +68,7 @@ Video.create(
   category: comedy
   )
 
-Video.create(
+Video.create!(
   title: 'Red Dwarf',
   description: 'Space adventures',
   small_cover_url: '/tmp/red_dwarf.jpg',

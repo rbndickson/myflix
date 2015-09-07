@@ -3,7 +3,7 @@
     .col-md-4.col-md-offset-4
       .well
         %h1.lead Sign In
-        = bootstrap_form_tag url: '/sign_in', method: 'POST' do |f|
+        = bootstrap_form_tag url: sign_in_path, method: 'POST' do |f|
           = f.email_field :email
           = f.password_field :password
           = f.submit value: "Sign In", class: "btn btn-default"
