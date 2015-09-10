@@ -15,9 +15,9 @@ describe SessionsController do
   end
 
   describe "POST create" do
-    context "with valid credentials" do
-      let (:alice) { Fabricate(:user) }
+    let (:alice) { Fabricate(:user) }
 
+    context "with valid credentials" do
       before do
         post :create, email: alice.email, password: alice.password
       end
@@ -36,21 +36,19 @@ describe SessionsController do
     end
 
     context "with invalid credentials" do
-      it "does not puts the user in the session" do
-        alice = Fabricate(:user)
+      before do
         post :create, email: alice.email, password: alice.password + 'aaa'
+      end
+
+      it "does not puts the user in the session" do
         expect(session[:user_id]).to be_nil
       end
 
       it "redirects to the sign in path if details incorrect" do
-        alice = Fabricate(:user)
-        post :create, email: alice.email, password: alice.password + 'aaa'
         expect(response).to redirect_to(sign_in_path)
       end
 
       it "sets the flash notice" do
-        alice = Fabricate(:user)
-        post :create, email: alice.email, password: alice.password + 'aaa'
         expect(flash[:danger]).not_to be_blank
       end
     end
