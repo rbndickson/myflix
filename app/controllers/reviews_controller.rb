@@ -3,8 +3,11 @@ class ReviewsController < ApplicationController
 
   def create
     @video = Video.find(params[:video_id])
-    @review = @video.reviews.build(review_params)
-    @review.user = current_user
+    @review = @video.reviews.build(
+      user: current_user,
+      rating: params[:review][:rating],
+      content: params[:review][:content]
+    )
 
     if @review.save
       redirect_to @review.video
@@ -12,10 +15,6 @@ class ReviewsController < ApplicationController
       @reviews = @video.reviews.reload
       render 'videos/show'
     end
-  end
 
-  def review_params
-    params.require(:review).permit(:rating, :content)
   end
-
 end
