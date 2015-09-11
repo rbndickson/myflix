@@ -4,6 +4,7 @@ describe Video do
   it { should belong_to(:category) }
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:description) }
+  it { should have_many(:reviews).order("created_at DESC") }
 
   describe ".search_by_title" do
 
@@ -37,6 +38,20 @@ describe Video do
       expect(Video.search_by_title("")).to eq([])
     end
 
+  end
+
+  describe "#average_rating" do
+    it "returns nil when there are no reviews" do
+      video = Fabricate(:video)
+      expect(video.average_rating).to eq(nil)
+    end
+
+    it "returns the average of the ratings when there are reviews" do
+      video = Fabricate(:video)
+      review1 = Fabricate(:review, rating: 4, video: video)
+      review2 = Fabricate(:review, rating: 5, video: video)
+      expect(video.average_rating).to eq(4.5)
+    end
   end
 
 end

@@ -4,7 +4,7 @@ comedy = Category.create!(name: 'Comedy')
 reality = Category.create!(name: 'Reality')
 animation = Category.create!(name: 'Animation')
 
-Video.create!(
+the_office = Video.create!(
   title: 'The Office',
   description: 'Comedy about British office life',
   small_cover_url: '/tmp/office.jpg',
@@ -74,4 +74,30 @@ Video.create!(
   small_cover_url: '/tmp/red_dwarf.jpg',
   large_cover_url: '/tmp/red_dwarf_large.jpg',
   category: comedy
+  )
+
+alice = User.create!(
+  email: "alice@example.com",
+  password: 'password',
+  full_name: 'Alice Alicia'
+  )
+
+bob = User.create!(
+  email: "bryan@example.com",
+  password: 'password',
+  full_name: 'Bob Bobson'
+  )
+
+Review.create!(
+  user_id: alice.id,
+  video_id: the_office.id,
+  rating: 5,
+  content: "Very funny indeed!"
+  )
+
+Review.create!(
+  user_id: bob.id,
+  video_id: the_office.id,
+  rating: 2,
+  content: "Not very funny..."
   )

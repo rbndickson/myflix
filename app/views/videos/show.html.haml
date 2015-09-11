@@ -6,7 +6,34 @@
       .video_info.col-sm-3
         %header
           %h3= @video.title
-          %h4=link_to @video.category.name, category_path(@video.category)
-          %span Rating: 4.5/5.0
+          %h4=link_to @video.category.name, @video.category
+          %span
+            - if @video.average_rating
+              Rating: #{@video.average_rating}/5.0
+            - else
+              There are no reviews
         %p= @video.description
         .actions
+%section.reviews.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      = bootstrap_form_for([@video, Review.new]) do |f|
+        %fieldset
+          .row
+            = f.select :rating, star_options, { label: "Rate this video" }, wrapper: { class: 'col-sm-3' }
+          .row
+            = f.text_area :content, label: "Write Review", wrapper: { class: 'col-sm-8' }, :rows => 6
+        %fieldset.form-group.actions.clearfix
+          = f.submit
+          = link_to "Cancel", @video
+      %header
+        %h3 User Reviews (#{@reviews.count})
+      %ul
+        - @reviews.each do |review|
+          %article.review
+            %li.row
+              .col-sm-2
+                %span Rating: #{review.rating} / 5
+                %p by #{link_to review.user.full_name, '/#'}
+              .col-sm-8
+                %p= review.content
