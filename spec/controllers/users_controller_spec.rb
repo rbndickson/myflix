@@ -11,10 +11,7 @@ describe UsersController do
 
   describe "POST create" do
     context "when the input is valid" do
-      before do
-        # the user: hash is because it is submitted from a model based form
-        post :create, user: Fabricate.attributes_for(:user)
-      end
+      before { post :create, user: Fabricate.attributes_for(:user) }
 
       it "creates a new user" do
         expect(User.count).to eq(1)
@@ -26,9 +23,7 @@ describe UsersController do
     end
 
     context "when the input is invalid" do
-      before do
-        post :create, user: { password: "password" }
-      end
+      before { post :create, user: { password: "password" } }
 
       it "does not create a new user" do
         expect(User.count).to eq(0)

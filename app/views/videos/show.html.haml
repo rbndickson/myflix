@@ -6,30 +6,26 @@
       .video_info.col-sm-3
         %header
           %h3= @video.title
-          %h4=link_to @video.category.name, category_path(@video.category)
+          %h4=link_to @video.category.name, @video.category
           %span
-            - if @video.average_rating != nil
-              = "Rating: #{@video.average_rating}/5.0"
+            - if @video.average_rating
+              Rating: #{@video.average_rating}/5.0
             - else
-              = "There are no reviews"
+              There are no reviews
         %p= @video.description
         .actions
 %section.reviews.container
   .row
     .col-sm-10.col-sm-offset-1
       = bootstrap_form_for([@video, Review.new]) do |f|
-        = f.form_group do
-          %fieldset
-            .row
-              .col-sm-3
-                = f.select :rating, [["5 Stars", 5], ["4 Stars", 4], ["3 Stars", 3], ["2 Stars", 2], ["1 Star", 1]], { label: "Rate this video" }
-          = f.form_group do
-            .row
-              .col-sm-8
-                = f.text_area :content, label: "Write Review", :rows => 6
-          %fieldset.form-group.actions.clearfix
-            = f.submit
-            = link_to "Cancel", video_path(@video)
+        %fieldset
+          .row
+            = f.select :rating, star_options, { label: "Rate this video" }, wrapper: { class: 'col-sm-3' }
+          .row
+            = f.text_area :content, label: "Write Review", wrapper: { class: 'col-sm-8' }, :rows => 6
+        %fieldset.form-group.actions.clearfix
+          = f.submit
+          = link_to "Cancel", @video
       %header
         %h3 User Reviews (#{@reviews.count})
       %ul
@@ -38,6 +34,6 @@
             %li.row
               .col-sm-2
                 %span Rating: #{review.rating} / 5
-                %p by <a href="">#{review.user.full_name}</a>
+                %p by #{link_to review.user.full_name, '/#'}
               .col-sm-8
                 %p= review.content

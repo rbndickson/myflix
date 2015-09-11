@@ -10,15 +10,10 @@ class Video < ActiveRecord::Base
   end
 
   def average_rating
-    reviews = self.reviews
-    if reviews.count == 0
+    if self.reviews.count == 0
       nil
     else
-      total = reviews.inject(0.0) do |sum, review|
-        sum + review[:rating].to_i
-      end
-      average = total / reviews.count
-      average.round(1)
+      Review.where(video: self).average(:rating).round(1)
     end
   end
 end
