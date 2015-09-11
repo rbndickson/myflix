@@ -41,12 +41,12 @@ describe Video do
   end
 
   describe "#average_rating" do
-    it "should return No reviews yet when there are no reviews" do
+    it "returns nil when there are no reviews" do
       video = Fabricate(:video)
       expect(video.average_rating).to eq(nil)
     end
 
-    it "should return the average of the ratings when there are reviews" do
+    it "returns the average of the ratings when there are reviews" do
       video = Fabricate(:video)
       review1 = Fabricate(:review, rating: 4, video: video)
       review2 = Fabricate(:review, rating: 5, video: video)
