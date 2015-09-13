@@ -12,7 +12,7 @@ the_office = Video.create!(
   category: comedy
 )
 
-Video.create!(
+the_amazing_race = Video.create!(
   title: 'The Amazing Race',
   description: 'Contestants race around the world completing various challenges',
   small_cover_url: '/tmp/amazing_race.jpg',
@@ -83,21 +83,33 @@ alice = User.create!(
   )
 
 bob = User.create!(
-  email: "bryan@example.com",
+  email: "bob@example.com",
   password: 'password',
   full_name: 'Bob Bobson'
   )
 
 Review.create!(
-  user_id: alice.id,
-  video_id: the_office.id,
+  user: alice,
+  video: the_office,
   rating: 5,
   content: "Very funny indeed!"
   )
 
 Review.create!(
-  user_id: bob.id,
-  video_id: the_office.id,
+  user: bob,
+  video: the_office,
   rating: 2,
   content: "Not very funny..."
   )
+
+QueueItem.create!(
+  user: alice,
+  video: the_office,
+  position: 1
+)
+
+QueueItem.create!(
+  user: alice,
+  video: the_amazing_race,
+  position: 2
+)
