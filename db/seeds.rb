@@ -89,27 +89,27 @@ bob = User.create!(
   )
 
 Review.create!(
-  user_id: alice.id,
-  video_id: the_office.id,
+  user: alice,
+  video: the_office,
   rating: 5,
   content: "Very funny indeed!"
   )
 
 Review.create!(
-  user_id: bob.id,
-  video_id: the_office.id,
+  user: bob,
+  video: the_office,
   rating: 2,
   content: "Not very funny..."
   )
 
 QueueItem.create!(
-  user_id: alice.id,
-  video_id: the_office.id,
+  user: alice,
+  video: the_office,
   position: 1
 )
 
 QueueItem.create!(
-  user_id: alice.id,
-  video_id: the_amazing_race.id,
+  user: alice,
+  video: the_amazing_race,
   position: 2
 )
