@@ -5,22 +5,8 @@ describe QueueItem do
   it { should belong_to(:video) }
   it { should validate_numericality_of(:position).only_integer }
 
-  describe '#video_title' do
-    it "returns the title of the associated video" do
-      bond = Fabricate(:video, title: 'Bond')
-      queue_item = Fabricate(:queue_item, video: bond)
-      expect(queue_item.video_title).to eq('Bond')
-    end
-  end
-
-  describe '#category' do
-    it "returns the category of the associated video" do
-      action = Fabricate(:category)
-      bond = Fabricate(:video, category: action)
-      queue_item = Fabricate(:queue_item, video: bond)
-      expect(queue_item.category).to eq(action)
-    end
-  end
+  it { should delegate_method(:category).to(:video) }
+  it { should delegate_method(:title).to(:video).with_prefix(:video) }
 
   describe '#category_name' do
     it "returns the category name of the associated video" do
