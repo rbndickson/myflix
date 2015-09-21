@@ -2,22 +2,26 @@ require 'spec_helper'
 
 describe SessionsController do
   describe "GET new" do
-    it "renders the new template for unauthenticated users" do
-      get :new
-      expect(response).to render_template(:new)
+    context "with unauthenticated users" do
+      it "renders the new user template" do
+        get :new
+        expect(response).to render_template(:new)
+      end
     end
 
-    it "redirects to the home path if user is signed in" do
-      session[:user_id] = Fabricate(:user).id
-      get :new
-      expect(response).to redirect_to(home_path)
+    context "with authenticated users" do
+      it "redirects to the home path" do
+        session[:user_id] = Fabricate(:user).id
+        get :new
+        expect(response).to redirect_to(home_path)
+      end
     end
   end
 
   describe "POST create" do
     let (:alice) { Fabricate(:user) }
 
-    context "with valid credentials" do
+    context "with valid email and password" do
       before do
         post :create, email: alice.email, password: alice.password
       end
@@ -35,20 +39,20 @@ describe SessionsController do
       end
     end
 
-    context "with invalid credentials" do
+    context "with invalid email or password" do
       before do
         post :create, email: alice.email, password: alice.password + 'aaa'
       end
 
-      it "does not puts the user in the session" do
+      it "does not put the user in the session" do
         expect(session[:user_id]).to be_nil
       end
 
-      it "redirects to the sign in path if details incorrect" do
+      it "redirects to the sign in path" do
         expect(response).to redirect_to(sign_in_path)
       end
 
-      it "sets the flash notice" do
+      it "sets a flash notice" do
         expect(flash[:danger]).not_to be_blank
       end
     end
@@ -68,7 +72,7 @@ describe SessionsController do
       expect(response).to redirect_to(root_path)
     end
 
-    it "sets the flash notice" do
+    it "sets a flash notice" do
       expect(flash[:info]).not_to be_blank
     end
   end
