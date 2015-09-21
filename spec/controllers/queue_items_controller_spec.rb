@@ -13,9 +13,8 @@ describe QueueItemsController do
     end
 
     context "when user is unauthenticated" do
-      it "redirects to the login page" do
-        get :index
-        expect(response).to redirect_to(sign_in_path)
+      it_behaves_like "users must sign in" do
+        let(:action) { get :index }
       end
     end
   end
