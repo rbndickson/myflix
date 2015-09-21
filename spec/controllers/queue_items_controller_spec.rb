@@ -2,120 +2,102 @@ require 'spec_helper'
 
 describe QueueItemsController do
   describe 'GET index' do
-    context "with authenticated user" do
-      it "assigns @queue_items to the current user's queue items" do
-        set_current_user
-        video = Fabricate(:video)
-        queue_item = Fabricate(:queue_item, video: video, user: current_user)
-        get :index
-        expect(assigns(:queue_items)).to match_array([queue_item])
-      end
+
+    it_behaves_like "users must be signed in" do
+      let(:action) { get :index }
     end
 
-    context "with unauthenticated user" do
-      it_behaves_like "users must sign in" do
-        let(:action) { get :index }
-      end
+    it "assigns @queue_items to the current user's queue items" do
+      set_current_user
+      video = Fabricate(:video)
+      queue_item = Fabricate(:queue_item, video: video, user: current_user)
+      get :index
+      expect(assigns(:queue_items)).to match_array([queue_item])
     end
   end
 
   describe 'POST create' do
-    let(:superman) { Fabricate(:video) }
+    before { set_current_user }
 
-    context "with authenticated user" do
-      before { set_current_user }
+    let(:video) { Fabricate(:video) }
 
-      it "redirects to the my queue page" do
-        post :create, video_id: superman.id
-        expect(response).to redirect_to(my_queue_path)
-      end
-
-      it "saves a new queue item" do
-        post :create, video_id: superman.id
-        expect(QueueItem.count).to eq(1)
-      end
-
-      it "saves a queue item associated with the video" do
-        post :create, video_id: superman.id
-        expect(QueueItem.first.video).to eq(superman)
-      end
-
-      it "saves a queue item associatied with the signed in user" do
-        post :create, video_id: superman.id
-        expect(QueueItem.first.user).to eq(current_user)
-      end
-
-      it "sets the list order position" do
-        Fabricate(:queue_item, video: superman, user: current_user, position: 1)
-        batman = Fabricate(:video)
-        post :create, video_id: batman.id
-        batman_queue_item = QueueItem.find_by(video: batman, user: current_user)
-        expect(batman_queue_item.position).to eq(2)
-      end
-
-      it "does not add the same video twice" do
-        Fabricate(:queue_item, video: superman, user: current_user)
-        post :create, video_id: superman.id
-        expect(QueueItem.count).to eq(1)
-      end
+    it_behaves_like "users must be signed in" do
+      let(:action) { post :create, video_id: video.id }
     end
 
-    context "with unauthenticated user" do
-      it_behaves_like "users must sign in" do
-        let(:action) { post :create, video_id: superman.id }
-      end
+    it "redirects to the my queue page" do
+      post :create, video_id: video.id
+      expect(response).to redirect_to(my_queue_path)
     end
 
-    describe 'DELETE destroy' do
-      context "with authenticated user" do
-        let(:superman) { Fabricate(:video) }
-        let(:queue_item) { Fabricate(:queue_item, video: superman, user: current_user, position: 1) }
+    it "saves a new queue item" do
+      post :create, video_id: video.id
+      expect(QueueItem.count).to eq(1)
+    end
 
-        before { set_current_user }
+    it "saves a queue item associated with the video" do
+      post :create, video_id: video.id
+      expect(QueueItem.first.video).to eq(video)
+    end
 
-        it "redirects to the my queue page" do
-          delete :destroy, id: queue_item.id
-          expect(response).to redirect_to(my_queue_path)
-        end
+    it "saves a queue item associatied with the signed in user" do
+      post :create, video_id: video.id
+      expect(QueueItem.first.user).to eq(current_user)
+    end
 
-        it "deletes queue item" do
-          delete :destroy, id: queue_item.id
-          expect(QueueItem.count).to eq(0)
-        end
+    it "sets the list order position" do
+      Fabricate(:queue_item, video: video, user: current_user, position: 1)
+      video2 = Fabricate(:video)
+      post :create, video_id: video2.id
+      video2_queue_item = QueueItem.find_by(video: video2, user: current_user)
+      expect(video2_queue_item.position).to eq(2)
+    end
 
-        it "normalizes the remaining queue items" do
-          batman = Fabricate(:video)
-          spiderman = Fabricate(:video)
-          queue_item1 = Fabricate(:queue_item, video: superman, user: current_user, position: 1)
-          queue_item2 = Fabricate(:queue_item, video: batman, user: current_user, position: 2)
-          queue_item3 = Fabricate(:queue_item, video: spiderman, user: current_user, position: 3)
-          delete :destroy, id: queue_item2.id
-          expect(queue_item1.reload.position).to eq(1)
-          expect(queue_item3.reload.position).to eq(2)
-        end
+    it "does not add the same video twice" do
+      Fabricate(:queue_item, video: video, user: current_user)
+      post :create, video_id: video.id
+      expect(QueueItem.count).to eq(1)
+    end
+  end
 
-        it "does not allow a user to delete a queue item that they do not own" do
-          bob = Fabricate(:user)
-          bobs_queue_item = Fabricate(:queue_item, video: superman, user: bob, position: 1)
-          delete :destroy, id: bobs_queue_item.id
-          expect(QueueItem.all).to eq([bobs_queue_item])
-        end
-      end
+  describe 'DELETE destroy' do
+    let(:video) { Fabricate(:video) }
+    let(:bob) { Fabricate(:user) }
+    let(:queue_item) { Fabricate(:queue_item, video: video, user: current_user, position: 1) }
+    let(:bobs_queue_item) { Fabricate(:queue_item, video: video, user: bob, position: 1) }
 
-      context "with unauthenticated user" do
-        it "redirect to the sign in page" do
-          bob = Fabricate(:user)
-          video = Fabricate(:video)
-          queue_item = Fabricate(:queue_item, video: video, user: bob)
-          delete :destroy, id: queue_item.id
-          expect(response).to redirect_to(sign_in_path)
-        end
-      end
+    before { set_current_user }
+
+    it_behaves_like "users must be signed in" do
+      let(:action) { delete :destroy, id: bobs_queue_item.id }
+    end
+
+    it "redirects to the my queue page" do
+      delete :destroy, id: queue_item.id
+      expect(response).to redirect_to(my_queue_path)
+    end
+
+    it "deletes queue item" do
+      delete :destroy, id: queue_item.id
+      expect(QueueItem.count).to eq(0)
+    end
+
+    it "normalizes the remaining queue items" do
+      video2 = Fabricate(:video)
+      queue_item1 = Fabricate(:queue_item, video: video, user: current_user, position: 1)
+      queue_item2 = Fabricate(:queue_item, video: video2, user: current_user, position: 2)
+      delete :destroy, id: queue_item1.id
+      expect(queue_item2.reload.position).to eq(1)
+    end
+
+    it "does not allow a user to delete a queue item that they do not own" do
+      delete :destroy, id: bobs_queue_item.id
+      expect(QueueItem.all).to eq([bobs_queue_item])
     end
   end
 
   describe "POST update_queue" do
-    context "with valid inputs by authenticated user" do
+    context "with valid inputs by an authenticated user" do
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }
       let(:queue_item1) { Fabricate(:queue_item, video: video1, user: current_user, position: 1) }

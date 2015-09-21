@@ -48,7 +48,7 @@ describe VideosController do
     end
 
     context "with unauthenticated users" do
-      it_behaves_like "users must sign in" do
+      it_behaves_like "users must be signed in" do
         let(:action) { get :search, query: video.title }
       end
     end
