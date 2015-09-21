@@ -4,10 +4,9 @@ describe QueueItemsController do
   describe 'GET index' do
     context "when user is authenticated" do
       it "assigns @queue_items to the current user's queue items" do
-        alice = Fabricate(:user)
+        set_current_user
         video = Fabricate(:video)
-        session[:user_id] = alice.id
-        queue_item = Fabricate(:queue_item, video: video, user: alice)
+        queue_item = Fabricate(:queue_item, video: video, user: current_user)
         get :index
         expect(assigns(:queue_items)).to match_array([queue_item])
       end
@@ -22,11 +21,10 @@ describe QueueItemsController do
   end
 
   describe 'POST create' do
-    let(:alice) { Fabricate(:user) }
     let(:superman) { Fabricate(:video) }
 
     context "when user is authenticated" do
-      before { session[:user_id] = alice.id }
+      before { set_current_user }
 
       it "redirects to the my queue page" do
         post :create, video_id: superman.id
@@ -45,19 +43,19 @@ describe QueueItemsController do
 
       it "saves a queue item associatied with the signed in user" do
         post :create, video_id: superman.id
-        expect(QueueItem.first.user).to eq(alice)
+        expect(QueueItem.first.user).to eq(current_user)
       end
 
       it "sets the list order position" do
-        Fabricate(:queue_item, video: superman, user: alice, position: 1)
+        Fabricate(:queue_item, video: superman, user: current_user, position: 1)
         batman = Fabricate(:video)
         post :create, video_id: batman.id
-        batman_queue_item = QueueItem.find_by(video: batman, user: alice)
+        batman_queue_item = QueueItem.find_by(video: batman, user: current_user)
         expect(batman_queue_item.position).to eq(2)
       end
 
       it "does not add the same video twice" do
-        Fabricate(:queue_item, video: superman, user: alice)
+        Fabricate(:queue_item, video: superman, user: current_user)
         post :create, video_id: superman.id
         expect(QueueItem.count).to eq(1)
       end
@@ -72,11 +70,10 @@ describe QueueItemsController do
 
     describe 'DELETE destroy' do
       context "when user is authenticated" do
-        let(:alice) { Fabricate(:user) }
         let(:superman) { Fabricate(:video) }
-        let(:queue_item) { Fabricate(:queue_item, video: superman, user: alice, position: 1) }
+        let(:queue_item) { Fabricate(:queue_item, video: superman, user: current_user, position: 1) }
 
-        before { session[:user_id] = alice.id }
+        before { set_current_user }
 
         it "redirects to the my queue page" do
           delete :destroy, id: queue_item.id
@@ -91,9 +88,9 @@ describe QueueItemsController do
         it "normalizes the remaining queue items" do
           batman = Fabricate(:video)
           spiderman = Fabricate(:video)
-          queue_item1 = Fabricate(:queue_item, video: superman, user: alice, position: 1)
-          queue_item2 = Fabricate(:queue_item, video: batman, user: alice, position: 2)
-          queue_item3 = Fabricate(:queue_item, video: spiderman, user: alice, position: 3)
+          queue_item1 = Fabricate(:queue_item, video: superman, user: current_user, position: 1)
+          queue_item2 = Fabricate(:queue_item, video: batman, user: current_user, position: 2)
+          queue_item3 = Fabricate(:queue_item, video: spiderman, user: current_user, position: 3)
           delete :destroy, id: queue_item2.id
           expect(queue_item1.reload.position).to eq(1)
           expect(queue_item3.reload.position).to eq(2)
@@ -109,9 +106,9 @@ describe QueueItemsController do
 
       context "when user is unauthenticated" do
         it "redirect to the sign in page" do
-          alice = Fabricate(:user)
+          bob = Fabricate(:user)
           video = Fabricate(:video)
-          queue_item = Fabricate(:queue_item, video: video, user: alice)
+          queue_item = Fabricate(:queue_item, video: video, user: bob)
           delete :destroy, id: queue_item.id
           expect(response).to redirect_to(sign_in_path)
         end
@@ -121,14 +118,13 @@ describe QueueItemsController do
 
   describe "POST update_queue" do
     context "with valid inputs" do
-      let(:alice) { Fabricate(:user) }
-      let(:superman) { Fabricate(:video) }
-      let(:batman) { Fabricate(:video) }
-      let(:queue_item1) { Fabricate(:queue_item, video: superman, user: alice, position: 1) }
-      let(:queue_item2) { Fabricate(:queue_item, video: batman, user: alice, position: 2) }
+      let(:video1) { Fabricate(:video) }
+      let(:video2) { Fabricate(:video) }
+      let(:queue_item1) { Fabricate(:queue_item, video: video1, user: current_user, position: 1) }
+      let(:queue_item2) { Fabricate(:queue_item, video: video2, user: current_user, position: 2) }
 
       before do
-        session[:user_id] = alice.id
+        set_current_user
         post :update_queue, queue_items: [
           { id: queue_item1.id, position: 3 },
           { id: queue_item2.id, position: 2 }
@@ -140,7 +136,7 @@ describe QueueItemsController do
       end
 
       it "reorders the queue items" do
-        expect(alice.queue_items).to eq([queue_item2, queue_item1])
+        expect(current_user.queue_items).to eq([queue_item2, queue_item1])
       end
 
       it "normalizes the position numbers" do
@@ -150,14 +146,13 @@ describe QueueItemsController do
     end
 
     context "with invalid inputs" do
-      let(:alice) { Fabricate(:user) }
-      let(:superman) { Fabricate(:video) }
-      let(:batman) { Fabricate(:video) }
-      let(:queue_item1) { Fabricate(:queue_item, video: superman, user: alice, position: 1) }
-      let(:queue_item2) { Fabricate(:queue_item, video: batman, user: alice, position: 2) }
+      let(:video1) { Fabricate(:video) }
+      let(:video2) { Fabricate(:video) }
+      let(:queue_item1) { Fabricate(:queue_item, video: video1, user: current_user, position: 1) }
+      let(:queue_item2) { Fabricate(:queue_item, video: video2, user: current_user, position: 2) }
 
       before do
-        session[:user_id] = alice.id
+        set_current_user
         post :update_queue, queue_items: [
           { id: queue_item1.id, position: 2 },
           { id: queue_item2.id, position: 1.5 }
@@ -189,12 +184,12 @@ describe QueueItemsController do
 
     context "when queue items do not belong to the current user" do
       it "does not change the queue items" do
-        alice = Fabricate(:user)
-        session[:user_id] = alice.id
+        set_current_user
+        alice = current_user
         bob = Fabricate(:user)
-        superman = Fabricate(:video)
-        queue_item_alice = Fabricate(:queue_item, video: superman, user: alice, position: 1)
-        queue_item_bob = Fabricate(:queue_item, video: superman, user: bob, position: 2)
+        video1 = Fabricate(:video)
+        queue_item_alice = Fabricate(:queue_item, video: video1, user: alice, position: 1)
+        queue_item_bob = Fabricate(:queue_item, video: video1, user: bob, position: 2)
         post :update_queue, queue_items: [
           { id: queue_item_alice.id, position: 2 },
           { id: queue_item_bob.id, position: 1 }
