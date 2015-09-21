@@ -48,9 +48,8 @@ describe VideosController do
     end
 
     context "with unauthenticated users" do
-      it "redirects to the sign in page" do
-        get :search, query: video.title
-        expect(response).to redirect_to(sign_in_path)
+      it_behaves_like "users must sign in" do
+        let(:action) { get :search, query: video.title }
       end
     end
   end

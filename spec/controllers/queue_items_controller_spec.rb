@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe QueueItemsController do
   describe 'GET index' do
-    context "when user is authenticated" do
+    context "with authenticated user" do
       it "assigns @queue_items to the current user's queue items" do
         set_current_user
         video = Fabricate(:video)
@@ -12,7 +12,7 @@ describe QueueItemsController do
       end
     end
 
-    context "when user is unauthenticated" do
+    context "with unauthenticated user" do
       it_behaves_like "users must sign in" do
         let(:action) { get :index }
       end
@@ -22,7 +22,7 @@ describe QueueItemsController do
   describe 'POST create' do
     let(:superman) { Fabricate(:video) }
 
-    context "when user is authenticated" do
+    context "with authenticated user" do
       before { set_current_user }
 
       it "redirects to the my queue page" do
@@ -60,15 +60,14 @@ describe QueueItemsController do
       end
     end
 
-    context "when user is unauthenticated" do
-      it "redirects to the sign in page" do
-        post :create, video_id: superman.id
-        expect(response).to redirect_to(sign_in_path)
+    context "with unauthenticated user" do
+      it_behaves_like "users must sign in" do
+        let(:action) { post :create, video_id: superman.id }
       end
     end
 
     describe 'DELETE destroy' do
-      context "when user is authenticated" do
+      context "with authenticated user" do
         let(:superman) { Fabricate(:video) }
         let(:queue_item) { Fabricate(:queue_item, video: superman, user: current_user, position: 1) }
 
@@ -103,7 +102,7 @@ describe QueueItemsController do
         end
       end
 
-      context "when user is unauthenticated" do
+      context "with unauthenticated user" do
         it "redirect to the sign in page" do
           bob = Fabricate(:user)
           video = Fabricate(:video)
@@ -116,7 +115,7 @@ describe QueueItemsController do
   end
 
   describe "POST update_queue" do
-    context "with valid inputs" do
+    context "with valid inputs by authenticated user" do
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }
       let(:queue_item1) { Fabricate(:queue_item, video: video1, user: current_user, position: 1) }
@@ -144,7 +143,7 @@ describe QueueItemsController do
       end
     end
 
-    context "with invalid inputs" do
+    context "with invalid inputs by authenticated user" do
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }
       let(:queue_item1) { Fabricate(:queue_item, video: video1, user: current_user, position: 1) }
@@ -171,7 +170,7 @@ describe QueueItemsController do
       end
     end
 
-    context "when user is unauthenticated" do
+    context "with unauthenticated user" do
       it "redirects to the sign in path" do
         alice = Fabricate(:user)
         video = Fabricate(:video)
