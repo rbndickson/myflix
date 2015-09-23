@@ -109,6 +109,8 @@ describe QueueItemsController do
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }
       let(:alice) { Fabricate(:user) }
+      let(:queue_item1) { Fabricate(:queue_item, video: video1, user: alice, position: 1) }
+      let(:queue_item2) { Fabricate(:queue_item, video: video2, user: alice, position: 2) }
 
       before do
         set_current_user(alice)
@@ -117,8 +119,6 @@ describe QueueItemsController do
           { id: queue_item2.id, position: 2 }
         ]
       end
-      let(:queue_item1) { Fabricate(:queue_item, video: video1, user: alice, position: 1) }
-      let(:queue_item2) { Fabricate(:queue_item, video: video2, user: alice, position: 2) }
 
       it "redirects to the my queue page" do
         expect(response).to redirect_to(my_queue_path)

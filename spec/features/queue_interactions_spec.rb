@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-feature 'User interacts with my queue' do
-  scenario "aaa" do
+feature 'user interacts with my queue' do
+  scenario "user adds and reorders videos in the queue" do
     comedy = Fabricate(:category, name: 'Comedy')
     red_dwarf = Fabricate(:video, title: 'Red Dwarf', category: comedy)
     the_office = Fabricate(:video, title: 'The Office', category: comedy)
@@ -36,11 +36,11 @@ feature 'User interacts with my queue' do
   end
 
   def expect_video_to_be_in_queue(video)
-    page.should have_content(video.title)
+    expect(page).to have_content(video.title)
   end
 
   def expect_link_not_to_be_seen(link_text)
-    page.should_not have_content(link_text)
+    expect(page).not_to have_content(link_text)
   end
 
   def set_video_position(video, position)
