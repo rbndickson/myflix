@@ -5,7 +5,7 @@
     %ul.col-md-3.clearfix
       %li= link_to "Videos", videos_path
       %li= link_to "My Queue", my_queue_path
-      %li= link_to "People"
+      %li= link_to "People", people_path
     = form_tag(search_videos_path, class:"col-md-5 form-inline", method: "get") do
       = search_field_tag "query", nil, class: "form-control pull-left", placeholder: "Enter title here"
       = submit_tag "Search", class: "btn btn-default"
