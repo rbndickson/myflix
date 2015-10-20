@@ -1,9 +1,13 @@
 require 'spec_helper'
 
 describe RelationshipsController do
-  let(:alice) { Fabricate(:user) }
-
   describe "GET index" do
+    let(:alice) { Fabricate(:user) }
+
+    it_behaves_like "users must be signed in" do
+      let(:action) { get :index }
+    end
+
     it "assigns @user" do
       set_current_user(alice)
       get :index
@@ -12,6 +16,12 @@ describe RelationshipsController do
   end
 
   describe "POST create" do
+    let(:alice) { Fabricate(:user) }
+
+    it_behaves_like "users must be signed in" do
+      let(:action) { post :create, id: alice.id }
+    end
+
     context "when the relationship is not a duplicate" do
       let(:alice) { Fabricate(:user) }
       let(:bob) { Fabricate(:user) }
@@ -61,6 +71,36 @@ describe RelationshipsController do
       it "reloads the page" do
         expect(response).to redirect_to(user_path(bob))
       end
+    end
+  end
+
+  describe "DELETE destroy" do
+    let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
+
+    it_behaves_like "users must be signed in" do
+      let(:action) do
+        alice.follow(bob)
+        delete :destroy, id: bob.id
+      end
+    end
+
+    before do
+      set_current_user(alice)
+      alice.follow(bob)
+      delete :destroy, id: bob.id
+    end
+
+    it "deletes the record" do
+      expect(Relationship.count).to eq(0)
+    end
+
+    it "displays a confirmation message" do
+      expect(flash[:info]).to be_present
+    end
+
+    it "redirects to the people page" do
+      expect(response).to redirect_to(people_path)
     end
   end
 end

@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
   def follow(other_user)
     following_relationships.create(leader_id: other_user.id)
   end
+
+  def unfollow(other_user)
+    following_relationships.find_by(leader_id: other_user.id).destroy
+  end
 end

@@ -54,4 +54,16 @@ describe User do
       end
     end
   end
+
+  describe "#unfollow" do
+    let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
+
+    it "destroys the record" do
+      alice.follow(bob)
+      expect(Relationship.count).to eq(1)
+      alice.unfollow(bob)
+      expect(Relationship.count).to eq(0)
+    end
+  end
 end
