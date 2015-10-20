@@ -60,10 +60,24 @@ describe User do
     let(:bob) { Fabricate(:user) }
 
     it "destroys the record" do
-      alice.follow(bob)
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
       expect(Relationship.count).to eq(1)
       alice.unfollow(bob)
       expect(Relationship.count).to eq(0)
+    end
+  end
+
+  describe "#follows?" do
+    let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
+
+    it "returns true if the user follows the given other user" do
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      expect(alice.follows?(bob)).to be true
+    end
+
+    it "returns false if the user does not follow the given other user" do
+      expect(alice.follows?(bob)).to be false
     end
   end
 end
