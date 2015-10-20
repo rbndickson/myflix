@@ -49,7 +49,8 @@ describe User do
 
     context "with duplicates" do
       it "does not add a new record" do
-        2.times { alice.follow(bob) }
+        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+        alice.follow(bob)
         expect(Relationship.count).to eq(1)
       end
     end

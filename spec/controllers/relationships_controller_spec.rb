@@ -3,15 +3,17 @@ require 'spec_helper'
 describe RelationshipsController do
   describe "GET index" do
     let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
 
     it_behaves_like "users must be signed in" do
       let(:action) { get :index }
     end
 
-    it "assigns @user" do
+    it "assigns @relationships to the current users relationships" do
       set_current_user(alice)
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
       get :index
-      expect(assigns(:user)).to eq(alice)
+      expect(assigns(:relationships)).to eq(alice.leaders)
     end
   end
 
@@ -56,7 +58,7 @@ describe RelationshipsController do
 
       before do
         set_current_user(alice)
-        alice.follow(bob)
+        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
         post :create, id: bob.id
       end
 
@@ -80,14 +82,14 @@ describe RelationshipsController do
 
     it_behaves_like "users must be signed in" do
       let(:action) do
-        alice.follow(bob)
+        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
         delete :destroy, id: bob.id
       end
     end
 
     before do
       set_current_user(alice)
-      alice.follow(bob)
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
       delete :destroy, id: bob.id
     end
 

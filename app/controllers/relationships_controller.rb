@@ -2,7 +2,7 @@ class RelationshipsController < ApplicationController
   before_action :require_user
 
   def index
-    @user = current_user
+    @relationships = current_user.leaders
   end
 
   def create
