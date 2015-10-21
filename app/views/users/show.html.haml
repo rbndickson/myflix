@@ -8,7 +8,7 @@
           - if current_user.follows?(@user)
             %button.btn.btn-default.disabled
               Following
-          - else
+          - elsif current_user.can_follow?(@user)
             %button.btn.btn-default= link_to 'Follow', relationships_path(id: @user), method: :post
         %table.table
           %thead

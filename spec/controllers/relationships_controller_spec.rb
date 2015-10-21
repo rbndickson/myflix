@@ -19,15 +19,14 @@ describe RelationshipsController do
 
   describe "POST create" do
     let(:alice) { Fabricate(:user) }
+    let(:bob) { Fabricate(:user) }
 
     it_behaves_like "users must be signed in" do
       let(:action) { post :create, id: alice.id }
     end
 
-    context "when the relationship is not a duplicate" do
-      let(:alice) { Fabricate(:user) }
-      let(:bob) { Fabricate(:user) }
 
+    context "when the relationship is not a duplicate" do
       before do
         set_current_user(alice)
         post :create, id: bob.id
@@ -52,27 +51,17 @@ describe RelationshipsController do
       end
     end
 
-    context "when the relationship is a duplicate" do
-      let(:alice) { Fabricate(:user) }
-      let(:bob) { Fabricate(:user) }
+    it "does not create a record when an identical relationship exists" do
+      set_current_user(alice)
+      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      post :create, id: bob.id
+      expect(Relationship.count).to eq(1)
+    end
 
-      before do
-        set_current_user(alice)
-        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
-        post :create, id: bob.id
-      end
-
-      it "does not create a duplicate record" do
-        expect(Relationship.count).to eq(1)
-      end
-
-      it "sets an error message" do
-        expect(flash[:danger]).to be_present
-      end
-
-      it "reloads the page" do
-        expect(response).to redirect_to(user_path(bob))
-      end
+    it "does not allow a user to follow themselves" do
+      set_current_user(alice)
+      post :create, id: alice.id
+      expect(Relationship.count).to eq(0)
     end
   end
 

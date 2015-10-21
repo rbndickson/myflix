@@ -40,4 +40,8 @@ class User < ActiveRecord::Base
   def follows?(other_user)
     leaders.include?(other_user)
   end
+
+  def can_follow?(other_user)
+    !(other_user == self || follows?(other_user))
+  end
 end

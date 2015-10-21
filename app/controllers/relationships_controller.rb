@@ -6,24 +6,21 @@ class RelationshipsController < ApplicationController
   end
 
   def create
-    user = User.find(params[:id])
+    other_user = User.find(params[:id])
 
-    if current_user.follow(user).save
-      flash[:success] = "You have followed #{user.full_name}"
-
+    if current_user.can_follow?(other_user)
+      current_user.follow(other_user)
+      flash[:success] = "You have followed #{other_user.full_name}"
       redirect_to people_path
     else
-      flash[:danger] = "You are already following #{user.full_name}."
-
-      redirect_to user
+      redirect_to root_path
     end
   end
 
   def destroy
-    user = User.find(params[:id])
-    current_user.unfollow(user)
-    flash[:info] = "You have unfollowed #{user.full_name}"
-
+    other_user = User.find(params[:id])
+    current_user.unfollow(other_user)
+    flash[:info] = "You have unfollowed #{other_user.full_name}"
     redirect_to people_path
   end
 end
