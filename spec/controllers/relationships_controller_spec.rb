@@ -11,7 +11,7 @@ describe RelationshipsController do
 
     it "assigns @relationships to the current users relationships" do
       set_current_user(alice)
-      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      Fabricate(:relationship, follower: alice, leader: bob)
       get :index
       expect(assigns(:relationships)).to eq(alice.leaders)
     end
@@ -53,7 +53,7 @@ describe RelationshipsController do
 
     it "does not create a record when an identical relationship exists" do
       set_current_user(alice)
-      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      Fabricate(:relationship, follower: alice, leader: bob)
       post :create, id: bob.id
       expect(Relationship.count).to eq(1)
     end
@@ -71,14 +71,14 @@ describe RelationshipsController do
 
     it_behaves_like "users must be signed in" do
       let(:action) do
-        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+        Fabricate(:relationship, follower: alice, leader: bob)
         delete :destroy, id: bob.id
       end
     end
 
     before do
       set_current_user(alice)
-      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      Fabricate(:relationship, follower: alice, leader: bob)
       delete :destroy, id: bob.id
     end
 

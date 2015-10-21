@@ -49,7 +49,7 @@ describe User do
 
     context "with duplicates" do
       it "does not add a new record" do
-        Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+        Fabricate(:relationship, follower: alice, leader: bob)
         alice.follow(bob)
         expect(Relationship.count).to eq(1)
       end
@@ -61,10 +61,8 @@ describe User do
     let(:bob) { Fabricate(:user) }
 
     it "destroys the record" do
-      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
-      expect(Relationship.count).to eq(1)
-      alice.unfollow(bob)
-      expect(Relationship.count).to eq(0)
+      Fabricate(:relationship, follower: alice, leader: bob)
+      expect{alice.unfollow(bob)}.to change{Relationship.count}.by(-1)
     end
   end
 
@@ -73,7 +71,7 @@ describe User do
     let(:bob) { Fabricate(:user) }
 
     it "returns true if the user follows the given other user" do
-      Fabricate(:relationship, follower_id: alice.id, leader_id: bob.id)
+      Fabricate(:relationship, follower: alice, leader: bob)
       expect(alice.follows?(bob)).to be true
     end
 

@@ -27,13 +27,13 @@ feature 'user interacts with social features' do
 
   def expect_user_to_be_in_followers(user)
     within("//section[@class='people']") do
-      page.should have_content(user.full_name)
+      expect(page).to have_content(user.full_name)
     end
   end
 
   def expect_user_to_not_be_in_followers(user)
     within("//section[@class='people']") do
-      page.should have_no_content(user.full_name)
+      expect(page).to have_no_content(user.full_name)
     end
   end
 end
