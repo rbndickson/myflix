@@ -4,7 +4,7 @@
       %article
         %header
           = image_tag gravatar_for(@user)
-          %h2= "#{@user.full_name}'s video collections (#{@user.queue_items.count})"
+          %h2 #{@user.full_name}'s video collections (#{@user.queue_items.count})
           - if current_user.follows?(@user)
             %button.btn.btn-default.disabled
               Following
@@ -26,7 +26,7 @@
   .row
     .col-sm-10.col-sm-offset-1
       %header
-        %h3= "#{@user.full_name}'s Reviews (#{@user.reviews.count})"
+        %h3 #{@user.full_name}'s Reviews (#{@user.reviews.count})
       %ul
         - @user.reviews.each do |review|
           %article.review
@@ -34,6 +34,6 @@
               .col-sm-2
                 %p
                   = link_to review.video.title
-                %col= "Rating: #{review.rating} / 5"
+                %col Rating: #{review.rating} / 5
               .col-sm-8
                 %p= review.content
