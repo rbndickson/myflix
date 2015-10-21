@@ -1,0 +1,39 @@
+%section.user.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %article
+        %header
+          = image_tag gravatar_for(@user)
+          %h2 #{@user.full_name}'s video collections (#{@user.queue_items.count})
+          - if current_user.follows?(@user)
+            %button.btn.btn-default.disabled
+              Following
+          - elsif current_user.can_follow?(@user)
+            %button.btn.btn-default= link_to 'Follow', relationships_path(id: @user), method: :post
+        %table.table
+          %thead
+            %tr
+              %th(width="30%") Video Title
+              %th(width="15%") Genre
+          %tbody
+            - @user.queue_items.each do |queue_item|
+              %tr
+                %td
+                  = link_to queue_item.video.title, queue_item.video
+                %td
+                  = link_to queue_item.video.category.name, queue_item.video.category
+%section.user_reviews.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %header
+        %h3 #{@user.full_name}'s Reviews (#{@user.reviews.count})
+      %ul
+        - @user.reviews.each do |review|
+          %article.review
+            %li.row
+              .col-sm-2
+                %p
+                  = link_to review.video.title
+                %col Rating: #{review.rating} / 5
+              .col-sm-8
+                %p= review.content
