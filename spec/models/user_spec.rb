@@ -33,11 +33,11 @@ describe User do
         expect(Relationship.count).to eq(1)
       end
 
-      it "creates a follower for the leader" do
+      it "creates a following relationship" do
         expect(bob.followers.first).to eq(alice)
       end
 
-      it "creates a leader for the follower" do
+      it "creates a leading relationship" do
         expect(alice.leaders.first).to eq(bob)
       end
 
