@@ -7,7 +7,7 @@ feature "registration" do
     fill_in "email", with: "alice@example.com"
     fill_in "password", with: "password"
     click_button "Sign In"
-    expect(page).to have_content("Welcome")
+    expect(page).to have_content("Welcome, #{}")
   end
 end
 
