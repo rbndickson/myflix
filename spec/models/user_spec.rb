@@ -50,6 +50,10 @@ describe User do
         expect(alice.followers).to be_empty
         expect(bob.leaders).to be_empty
       end
+
+      it "does not follow oneself" do
+        expect(alice.follow(alice)).to be_false
+      end
     end
 
     context "with duplicates" do

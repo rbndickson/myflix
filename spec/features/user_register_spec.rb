@@ -8,12 +8,12 @@ feature "registration" do
     fill_in "password", with: "password"
     click_button "Sign In"
     expect(page).to have_content("Welcome, #{}")
+    clear_emails
   end
 end
 
 feature 'emailer' do
   background do
-    clear_emails
     register_alice
     open_email('alice@example.com')
   end

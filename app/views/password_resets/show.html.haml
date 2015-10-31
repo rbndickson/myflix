@@ -6,7 +6,7 @@
           %h1 Reset Your Password
         %fieldset
           = label_tag :password, 'New Password'
-          = text_field_tag :password
+          = password_field_tag :password
           = hidden_field_tag :token, @token
           %fieldset.action
             %input(type="submit" value="Reset Password" class="btn btn-default")
