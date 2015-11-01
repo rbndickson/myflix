@@ -21,7 +21,11 @@ describe InvitationsController do
     context "with valid inputs" do
       before do
         set_current_user
-        post :create, invitation: { recipient_email: 'bob@example.com', recipient_name: 'Bob', message: 'Hi :) check out this website!' }
+        post :create, invitation: {
+          recipient_email: 'bob@example.com',
+          recipient_name: 'Bob',
+          message: 'Hi :) check out this website!'
+        }
       end
 
       it "redirects to the invitations page" do
@@ -58,6 +62,7 @@ describe InvitationsController do
       end
 
       it "does not send out an email" do
+        ActionMailer::Base.deliveries.clear
         expect(ActionMailer::Base.deliveries).to be_empty
       end
 

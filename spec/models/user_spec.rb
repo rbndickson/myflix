@@ -22,7 +22,7 @@ describe User do
     end
 
     it "returns false when the user has not already queued the video" do
-      expect(user.video_queued?(video)).to be false
+      expect(user.video_queued?(video)).to be_falsey
     end
   end
 
@@ -51,7 +51,7 @@ describe User do
       end
 
       it "does not follow oneself" do
-        expect(alice.follow(alice)).to be_false
+        expect(alice.follow(alice)).to be_falsey
       end
     end
 

@@ -10,7 +10,7 @@ feature 'user invites friend' do
     friend_signs_in
     friend_should_follow(alice)
     inviter_should_follow_friend(alice)
-    clear_email
+    clear_emails
   end
 
   def invite_a_friend

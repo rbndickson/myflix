@@ -20,6 +20,7 @@ feature 'emailer' do
 
   scenario "testing for content" do
     expect(current_email).to have_content('Hi Alice Alicia, welcome to MyFlix')
+    clear_emails
   end
 end
 
