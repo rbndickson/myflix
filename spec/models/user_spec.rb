@@ -8,9 +8,8 @@ describe User do
   it { should have_many(:queue_items).order('position') }
   it { should have_many(:reviews).order('created_at DESC') }
 
-  it "generates a random token when the user is created" do
-    user = Fabricate(:user)
-    expect(user.token).to be_present
+  it_behaves_like "a random token is generated" do
+    let(:object) { Fabricate(:user) }
   end
 
   describe "#video_queued?" do
@@ -23,16 +22,16 @@ describe User do
     end
 
     it "returns false when the user has not already queued the video" do
-      expect(user.video_queued?(video)).to be false
+      expect(user.video_queued?(video)).to be_falsey
     end
   end
 
-  describe "#follow" do
+  describe "#follow!" do
     let(:alice) { Fabricate(:user) }
     let(:bob) { Fabricate(:user) }
 
     context "with non duplicates" do
-      before { alice.follow(bob) }
+      before { alice.follow!(bob) }
 
       it "creates a new record" do
         expect(Relationship.count).to eq(1)
@@ -50,12 +49,16 @@ describe User do
         expect(alice.followers).to be_empty
         expect(bob.leaders).to be_empty
       end
+
+      it "does not follow oneself" do
+        expect(alice.follow!(alice)).to be_falsey
+      end
     end
 
     context "with duplicates" do
       it "does not add a new record" do
         Fabricate(:relationship, follower: alice, leader: bob)
-        alice.follow(bob)
+        alice.follow!(bob)
         expect(Relationship.count).to eq(1)
       end
     end

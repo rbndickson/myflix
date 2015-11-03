@@ -11,6 +11,10 @@ def sign_in(user=nil)
   click_button "Sign In"
 end
 
+def sign_out
+  visit sign_out_path
+end
+
 def visit_video_page(video)
   find("a[href='/videos/#{video.id}']").click
 end
