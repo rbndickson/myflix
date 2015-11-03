@@ -1,5 +1,5 @@
 class AppMailer < ActionMailer::Base
-  default from: 'info@rbn-myflix.com'
+  default from: 'myflix@rbn-myflix.com'
 
   def welcome_email(user)
     @user = user
