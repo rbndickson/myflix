@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
     queue_items.exists?(video: video)
   end
 
-  def follow(other_user)
-    following_relationships.create(leader: other_user) if can_follow?(other_user)
+  def follow!(other_user)
+    following_relationships.create!(leader: other_user) if can_follow?(other_user)
   end
 
   def unfollow(other_user)

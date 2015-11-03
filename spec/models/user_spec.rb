@@ -26,12 +26,12 @@ describe User do
     end
   end
 
-  describe "#follow" do
+  describe "#follow!" do
     let(:alice) { Fabricate(:user) }
     let(:bob) { Fabricate(:user) }
 
     context "with non duplicates" do
-      before { alice.follow(bob) }
+      before { alice.follow!(bob) }
 
       it "creates a new record" do
         expect(Relationship.count).to eq(1)
@@ -51,14 +51,14 @@ describe User do
       end
 
       it "does not follow oneself" do
-        expect(alice.follow(alice)).to be_falsey
+        expect(alice.follow!(alice)).to be_falsey
       end
     end
 
     context "with duplicates" do
       it "does not add a new record" do
         Fabricate(:relationship, follower: alice, leader: bob)
-        alice.follow(bob)
+        alice.follow!(bob)
         expect(Relationship.count).to eq(1)
       end
     end

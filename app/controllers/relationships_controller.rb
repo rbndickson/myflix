@@ -9,7 +9,7 @@ class RelationshipsController < ApplicationController
     other_user = User.find(params[:id])
 
     if current_user.can_follow?(other_user)
-      current_user.follow(other_user)
+      current_user.follow!(other_user)
       flash[:success] = "You have followed #{other_user.full_name}"
       redirect_to people_path
     else
