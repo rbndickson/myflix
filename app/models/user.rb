@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
     following_relationships.create!(leader: other_user) if can_follow?(other_user)
   end
 
-  def unfollow(other_user)
+  def unfollow!(other_user)
     following_relationships.find_by(leader: other_user).destroy
   end
 

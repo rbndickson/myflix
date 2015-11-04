@@ -19,7 +19,7 @@ class RelationshipsController < ApplicationController
 
   def destroy
     other_user = User.find(params[:id])
-    current_user.unfollow(other_user)
+    current_user.unfollow!(other_user)
     flash[:info] = "You have unfollowed #{other_user.full_name}"
     redirect_to people_path
   end
