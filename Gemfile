@@ -14,6 +14,7 @@ gem 'bcrypt'
 gem 'fabrication'
 gem 'faker'
 gem 'figaro'
+gem 'sidekiq'
 
 group :development do
   gem 'thin'
