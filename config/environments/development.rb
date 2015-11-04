@@ -1,3 +1,5 @@
+require 'sidekiq/testing/inline'
+
 Myflix::Application.configure do
   config.cache_classes = false
 
