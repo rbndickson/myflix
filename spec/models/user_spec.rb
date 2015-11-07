@@ -64,13 +64,13 @@ describe User do
     end
   end
 
-  describe "#unfollow" do
+  describe "#unfollow!" do
     let(:alice) { Fabricate(:user) }
     let(:bob) { Fabricate(:user) }
 
     it "destroys the record" do
       Fabricate(:relationship, follower: alice, leader: bob)
-      expect{alice.unfollow(bob)}.to change{Relationship.count}.by(-1)
+      expect{alice.unfollow!(bob)}.to change{Relationship.count}.by(-1)
     end
   end
 
