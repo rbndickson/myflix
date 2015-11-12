@@ -14,6 +14,7 @@ deployment:
     branch: staging
     commands:
       - heroku maintenance:on --app rbn-myflix-staging
+      - git fetch origin --unshallow
       - git push git@heroku.com:rbn-myflix-staging.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app rbn-myflix-staging
       - heroku maintenance:off --app rbn-myflix-staging

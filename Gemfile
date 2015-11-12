@@ -17,6 +17,9 @@ gem 'figaro'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'sentry-raven'
+gem 'carrierwave'
+gem 'carrierwave-aws'
+gem 'mini_magick'
 
 group :development do
   gem 'thin'
@@ -39,6 +42,6 @@ group :test do
   gem 'launchy'
 end
 
-group :production do
+group :production, :staging do
   gem 'rails_12factor'
 end

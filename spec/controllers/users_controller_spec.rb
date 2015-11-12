@@ -115,10 +115,11 @@ describe UsersController do
       it "sends the correct content" do
         post :create, user: user_attributes
         message = ActionMailer::Base.deliveries.last
-        expect(message.body).to include("Hi #{user_attributes[:full_name]}")
+        expect(message.body).to include("Hi #{user_attributes[:full_name].html_safe}")
       end
 
       it "does not send an email with invalid inputs" do
+        ActionMailer::Base.deliveries.clear
         post :create, user: { email: 'a@b.com' }
         expect(ActionMailer::Base.deliveries).to be_empty
       end
