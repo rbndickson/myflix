@@ -7,6 +7,7 @@ deployment:
     commands:
       - heroku maintenance:on --app rbn-myflix
       - heroku pg:backups capture --app rbn-myflix
+      - git fetch origin --unshallow
       - git push git@heroku.com:rbn-myflix.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app rbn-myflix
       - heroku maintenance:off --app rbn-myflix
