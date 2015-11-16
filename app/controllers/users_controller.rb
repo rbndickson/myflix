@@ -10,6 +10,17 @@ class UsersController < ApplicationController
 
     if @user.save
       handle_invitation
+
+      Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+
+      token = params[:stripeToken]
+      Stripe::Charge.create(
+        :amount => 999,
+        :currency => "usd",
+        :source => token,
+        :description => "Sign up charge for #{@user.email}"
+      )
+
       AppMailer.delay.welcome_email(@user.id)
       redirect_to sign_in_path
       flash[:success] = "You have been registered, please sign in."
