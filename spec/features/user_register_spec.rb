@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "registration" do
-  scenario "user creates account and logs in" do
+  scenario "user creates account and logs in", { js: true, vcr: true } do
     register_alice
     visit sign_in_path
     fill_in "email", with: "alice@example.com"
