@@ -6,6 +6,7 @@ feature 'user invites friend' do
     sign_in(alice)
     visit new_invitation_path
     invite_a_friend
+    sign_out_current_user
     friend_accepts_invitation
     friend_signs_in
     friend_should_follow(alice)
@@ -18,7 +19,6 @@ feature 'user invites friend' do
     fill_in "Friend's Email Address", with: "joe@example.com"
     fill_in "Message", with: "Hi, check out this site!"
     click_button "Send Invitation"
-    sign_out
   end
 
   def friend_accepts_invitation
@@ -31,6 +31,7 @@ feature 'user invites friend' do
     select "7 - July", from: "date_month"
     select "2017", from: "date_year"
     click_button "Sign Up"
+    expect(page).to have_content("Sign In")
   end
 
   def friend_signs_in
@@ -42,7 +43,7 @@ feature 'user invites friend' do
   def friend_should_follow(user)
     click_link "People"
     expect(page).to have_content(user.full_name)
-    sign_out
+    sign_out_current_user
   end
 
   def inviter_should_follow_friend(user)

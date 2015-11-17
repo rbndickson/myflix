@@ -13,12 +13,9 @@ feature "registration" do
 end
 
 feature 'emailer' do
-  background do
+  scenario "testing for content", { js: true, vcr: true } do
     register_alice
     open_email('alice@example.com')
-  end
-
-  scenario "testing for content" do
     expect(current_email).to have_content('Hi Alice Alicia, welcome to MyFlix')
     clear_emails
   end
@@ -35,4 +32,5 @@ def register_alice
   select "7 - July", from: "date_month"
   select "2017", from: "date_year"
   click_button "Sign Up"
+  expect(page).to have_content("Sign In")
 end

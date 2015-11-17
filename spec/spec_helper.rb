@@ -6,6 +6,7 @@ require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
+require 'vcr'
 Sidekiq::Testing.inline!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -29,6 +30,7 @@ VCR.configure do |c|
 end
 
 Capybara.server_port = 52662
+Capybara.default_max_wait_time = 5
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -81,7 +83,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each, :js => true) do
