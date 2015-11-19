@@ -18,8 +18,8 @@ class UsersController < ApplicationController
         @user.save
         handle_invitation
         AppMailer.delay.welcome_email(@user.id)
-        redirect_to sign_in_path
         flash[:success] = "You have been registered, please sign in."
+        redirect_to sign_in_path
       else
         flash.now[:danger] = charge.error_message
         render :new
