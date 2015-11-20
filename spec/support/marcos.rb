@@ -14,7 +14,7 @@ def sign_in(user=nil)
   click_button "Sign In"
 end
 
-def sign_out
+def sign_out_current_user
   visit sign_out_path
 end
 
