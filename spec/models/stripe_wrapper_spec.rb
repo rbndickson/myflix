@@ -16,7 +16,7 @@ describe StripeWrapper do
         response = StripeWrapper::Charge.create(
           amount: 999,
           source: token,
-          description: "Valid example charge"
+          description: "Valid example charge for valid@example.com"
         )
 
         expect(response).to be_successful
@@ -35,7 +35,7 @@ describe StripeWrapper do
         response = StripeWrapper::Charge.create(
           amount: 999,
           source: token,
-          description: "Invalid example charge"
+          description: "Invalid example charge for invalid@example.com"
         )
 
         expect(response).not_to be_successful
