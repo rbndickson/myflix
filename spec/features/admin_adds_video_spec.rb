@@ -15,7 +15,7 @@ feature "adding a video" do
     fill_in "Video URL", with: "http://www.example.com/amazing_video.mp4"
     click_button "Add Video"
 
-    sign_out
+    sign_out_current_user
     sign_in
 
     visit video_path(Video.first)

@@ -1,0 +1,68 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/charges
+    body:
+      encoding: US-ASCII
+      string: amount=999&currency=usd&description=Sign+up+charge+for+alice%40example.com&source=tok_1791bgF0WzU2IQJECZybWazG
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.31.0
+      Authorization:
+      - Bearer sk_test_IPehbj5k544QevYUL4nctTSF
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Robins-MBP.home 15.0.0 Darwin Kernel Version 15.0.0: Sat Sep 19 15:53:46 PDT
+        2015; root:xnu-3247.10.11~1/RELEASE_X86_64 x86_64","hostname":"Robins-MBP.home"}'
+      Content-Length:
+      - '110'
+  response:
+    status:
+      code: 402
+      message: Payment Required
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 19 Nov 2015 23:14:30 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '162'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_7NnCeFmCwUGe8k
+      Stripe-Version:
+      - '2015-10-16'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "error": {
+            "message": "Your card was declined.",
+            "type": "card_error",
+            "code": "card_declined",
+            "charge": "ch_1791bmF0WzU2IQJEgXSKnRdQ"
+          }
+        }
+    http_version: 
+  recorded_at: Thu, 19 Nov 2015 23:14:30 GMT
+recorded_with: VCR 2.9.3
