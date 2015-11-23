@@ -21,3 +21,14 @@ end
 def visit_video_page(video)
   find("a[href='/videos/#{video.id}']").click
 end
+
+def create_stripe_token(credit_card_number)
+  Stripe::Token.create(
+    card: {
+      number:    credit_card_number,
+      exp_month: 6,
+      exp_year:  2018,
+      cvc:       314
+    }
+  )
+end
