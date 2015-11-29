@@ -6,12 +6,8 @@
       .video_info.col-sm-3
         %header
           %h3= @video.title
-          %h4=link_to @video.category.name, @video.category
-          %span
-            - if @video.average_rating
-              Rating: #{@video.average_rating}/5.0
-            - else
-              There are no reviews
+          %h4= link_to @video.category.name, @video.category
+          %span= @video.average_rating
         %p= @video.description
         .actions
           = link_to("Watch Now", @video.video_url, class: 'btn btn-primary')
