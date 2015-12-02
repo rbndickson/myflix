@@ -4,7 +4,7 @@ describe UserSignup do
   describe "#sign_up" do
     context "with valid personal info and valid card" do
       let(:alice) { Fabricate(:user) }
-      let(:customer) { double(:customer, successful?: true) }
+      let(:customer) { double(:customer, successful?: true, customer_token: "abcdefg") }
       let(:sign_up_joe) { UserSignup.new(Fabricate.build(:user, email: 'joe@example.com', full_name: 'Joe Doe')).sign_up("stripe_token", nil) }
       let(:invitation) { Fabricate(:invitation, inviter: alice, recipient_email: 'joe@example.com') }
       let(:sign_up_joe_with_invitation) { UserSignup.new(Fabricate.build(:user, email:'joe@example.com', password: 'password', full_name: 'Joe Doe')).sign_up("stripe_token", invitation.token) }
@@ -26,6 +26,11 @@ describe UserSignup do
         sign_up_joe
         message = ActionMailer::Base.deliveries.last
         expect(message.body).to include("Hi Joe Doe")
+      end
+
+      it "stores the customer token from Stripe" do
+        sign_up_joe
+        expect(User.first.customer_token).to eq("abcdefg")
       end
 
       it "makes the user follow the inviter" do
