@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/charges
+    uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&description=Sign+up+charge+for+alice%40example.com&source=tok_1791NaF0WzU2IQJEEUjQQi30
+      string: card[cvc]=314&card[exp_month]=6&card[exp_year]=2018&card[number]=4242424242424242
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -19,10 +19,10 @@ http_interactions:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.1.2 p95 (2014-05-08)","platform":"x86_64-darwin14.0","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Robins-MBP.home 15.0.0 Darwin Kernel Version 15.0.0: Sat Sep 19 15:53:46 PDT
-        2015; root:xnu-3247.10.11~1/RELEASE_X86_64 x86_64","hostname":"Robins-MBP.home"}'
+        Robins-MacBook-Pro.local 15.0.0 Darwin Kernel Version 15.0.0: Sat Sep 19 15:53:46
+        PDT 2015; root:xnu-3247.10.11~1/RELEASE_X86_64 x86_64","hostname":"Robins-MacBook-Pro.local"}'
       Content-Length:
-      - '110'
+      - '81'
   response:
     status:
       code: 200
@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 19 Nov 2015 22:59:57 GMT
+      - Wed, 02 Dec 2015 18:50:56 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1457'
+      - '781'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7NmxykePNhU7ig
+      - req_7SasYGqebjPFwG
       Stripe-Version:
       - '2015-10-16'
       Strict-Transport-Security:
@@ -58,39 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_1791NhF0WzU2IQJEv55pnaCo",
-          "object": "charge",
-          "amount": 999,
-          "amount_refunded": 0,
-          "application_fee": null,
-          "balance_transaction": "txn_1791NhF0WzU2IQJE4mg3vHJN",
-          "captured": true,
-          "created": 1447973997,
-          "currency": "usd",
-          "customer": null,
-          "description": "Sign up charge for alice@example.com",
-          "destination": null,
-          "dispute": null,
-          "failure_code": null,
-          "failure_message": null,
-          "fraud_details": {},
-          "invoice": null,
-          "livemode": false,
-          "metadata": {},
-          "paid": true,
-          "receipt_email": null,
-          "receipt_number": null,
-          "refunded": false,
-          "refunds": {
-            "object": "list",
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/charges/ch_1791NhF0WzU2IQJEv55pnaCo/refunds"
-          },
-          "shipping": null,
-          "source": {
-            "id": "card_1791NaF0WzU2IQJEdkU4ra7n",
+          "id": "tok_17DfgqF0WzU2IQJE4JB3FKM0",
+          "object": "token",
+          "card": {
+            "id": "card_17DfgqF0WzU2IQJE604AJZ1R",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -102,11 +73,10 @@ http_interactions:
             "address_zip_check": null,
             "brand": "Visa",
             "country": "US",
-            "customer": null,
-            "cvc_check": "pass",
+            "cvc_check": "unchecked",
             "dynamic_last4": null,
-            "exp_month": 7,
-            "exp_year": 2017,
+            "exp_month": 6,
+            "exp_year": 2018,
             "fingerprint": "RW2p59TP9xAwhTjZ",
             "funding": "credit",
             "last4": "4242",
@@ -114,17 +84,20 @@ http_interactions:
             "name": null,
             "tokenization_method": null
           },
-          "statement_descriptor": null,
-          "status": "succeeded"
+          "client_ip": "105.158.24.133",
+          "created": 1449082256,
+          "livemode": false,
+          "type": "card",
+          "used": false
         }
     http_version: 
-  recorded_at: Thu, 19 Nov 2015 22:59:56 GMT
+  recorded_at: Wed, 02 Dec 2015 18:51:00 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: plan=monthly&source=tok_17DGP0F0WzU2IQJEznx5Udw4
+      string: plan=monthly&source=tok_17DfgqF0WzU2IQJE4JB3FKM0
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -150,7 +123,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 01 Dec 2015 15:50:52 GMT
+      - Wed, 02 Dec 2015 18:50:59 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -168,7 +141,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7SAkw6NhtJgKq7
+      - req_7Sasl96lc7S0eM
       Stripe-Version:
       - '2015-10-16'
       Strict-Transport-Security:
@@ -177,12 +150,12 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7SAkO2cwRyAXJW",
+          "id": "cus_7SasryneupGJK2",
           "object": "customer",
           "account_balance": 0,
-          "created": 1448985052,
+          "created": 1449082259,
           "currency": "usd",
-          "default_source": "card_17DGP0F0WzU2IQJEpQVVfBra",
+          "default_source": "card_17DfgqF0WzU2IQJE604AJZ1R",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -194,7 +167,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_17DGP0F0WzU2IQJEpQVVfBra",
+                "id": "card_17DfgqF0WzU2IQJE604AJZ1R",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -206,11 +179,11 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_7SAkO2cwRyAXJW",
+                "customer": "cus_7SasryneupGJK2",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
-                "exp_month": 7,
-                "exp_year": 2017,
+                "exp_month": 6,
+                "exp_year": 2018,
                 "fingerprint": "RW2p59TP9xAwhTjZ",
                 "funding": "credit",
                 "last4": "4242",
@@ -221,20 +194,20 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7SAkO2cwRyAXJW/sources"
+            "url": "/v1/customers/cus_7SasryneupGJK2/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [
               {
-                "id": "sub_7SAkL6KTJfCxUU",
+                "id": "sub_7SasDSfGnwJjx5",
                 "object": "subscription",
                 "application_fee_percent": null,
                 "cancel_at_period_end": false,
                 "canceled_at": null,
-                "current_period_end": 1451663452,
-                "current_period_start": 1448985052,
-                "customer": "cus_7SAkO2cwRyAXJW",
+                "current_period_end": 1451760659,
+                "current_period_start": 1449082259,
+                "customer": "cus_7SasryneupGJK2",
                 "discount": null,
                 "ended_at": null,
                 "metadata": {},
@@ -253,7 +226,7 @@ http_interactions:
                   "trial_period_days": null
                 },
                 "quantity": 1,
-                "start": 1448985052,
+                "start": 1449082259,
                 "status": "active",
                 "tax_percent": null,
                 "trial_end": null,
@@ -262,9 +235,9 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7SAkO2cwRyAXJW/subscriptions"
+            "url": "/v1/customers/cus_7SasryneupGJK2/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Tue, 01 Dec 2015 15:50:54 GMT
+  recorded_at: Wed, 02 Dec 2015 18:51:04 GMT
 recorded_with: VCR 2.9.3
