@@ -1,6 +1,4 @@
-class Admin::VideosController < ApplicationController
-  before_action :require_user
-  before_action :require_admin
+class Admin::VideosController < AdminsController
 
   def new
     @video = Video.new
@@ -22,12 +20,5 @@ class Admin::VideosController < ApplicationController
 
   def video_params
     params.require(:video).permit(:title, :category_id, :description, :small_cover, :large_cover, :video_url)
-  end
-
-  def require_admin
-    unless current_user.admin?
-      flash[:danger] = "You do not have access"
-      redirect_to home_path
-    end
   end
 end
