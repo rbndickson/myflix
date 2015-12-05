@@ -1,0 +1,54 @@
+%section.advanced_search.container
+  .row
+    %form
+      %header
+        %h1 Advanced Search
+      .col-xs-6
+        = form_tag advanced_search_videos_path, method: "get" do
+          .form-group
+            = search_field_tag "query", nil, class: "form-control", placeholder: "Search videos by title, description"
+          = button_tag "Search", type: "submit", class: "btn btn-primary" do
+            %span.glyphicon.glyphicon-search
+            Search
+    -# .form-group
+    -#   .col-xs-6
+    -#     .checkbox
+    -#       %label
+    -#         %input(type="checkbox") Include Reviews
+    -# .form-group
+    -#   .row.average_rating_label Average Rating
+    -#   %label.col-xs-1.control-label(for="rating_from") From:
+    -#   .col-xs-2
+    -#     %select.form-control(id="rating_from")
+    -#       %option -
+    -#       - (10..50).map { |num| num / 10.0 }.each do |number|
+    -#         %option{ value: number }= number
+    -#   %label.col-xs-1.control-label(for="rating_to") To:
+    -#   .col-xs-2
+    -#     %select.form-control(id="rating_to")
+    -#       %option -
+    -#       - (10..50).map { |num| num / 10.0 }.each do |number|
+    -#         %option{ value: number }= number
+  .row
+    .col-xs-6
+    %hr
+    -if @query
+      %h2.results_count Results: #{@results.count} videos found
+      - @results.each do |video|
+        %article.video.row
+          .video_data
+            %figure.col-xs-2
+              %img(src="#{video.small_cover_url}" alt="#{video.title}")
+            .video_body.col-xs-10
+              %header
+                %h3
+                  %em.label.label-highlight= video.title
+              %p.video_description
+                = video.description
+              %hr
+              .details
+                %span.average_rating Average rating: #{video.average_rating}
+                %span.reviews_count #{video.reviews.count} reviews
+              - unless video.reviews.count == 0
+                %footer.video_review
+                  = video.reviews.first.content
