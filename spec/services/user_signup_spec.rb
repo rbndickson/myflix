@@ -9,7 +9,7 @@ describe UserSignup do
       let(:invitation) { Fabricate(:invitation, inviter: alice, recipient_email: 'joe@example.com') }
       let(:sign_up_joe_with_invitation) { UserSignup.new(Fabricate.build(:user, email:'joe@example.com', password: 'password', full_name: 'Joe Doe')).sign_up("stripe_token", invitation.token) }
 
-      before { StripeWrapper::Customer.should_receive(:create).and_return(customer) }
+      before { expect(StripeWrapper::Customer).to receive(:create).and_return(customer) }
       after { ActionMailer::Base.deliveries.clear }
 
       it "creates a new user" do
