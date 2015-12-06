@@ -1,34 +1,30 @@
 %section.advanced_search.container
-  .row
-    %form
-      %header
-        %h1 Advanced Search
+  %form
+    %header
+      Advanced Search
+    .row
       .col-xs-6
         = form_tag advanced_search_videos_path, method: "get" do
           .form-group
             = search_field_tag "query", nil, class: "form-control", placeholder: "Search videos by title, description"
-          = button_tag "Search", type: "submit", class: "btn btn-primary" do
-            %span.glyphicon.glyphicon-search
-            Search
-    -# .form-group
-    -#   .col-xs-6
-    -#     .checkbox
-    -#       %label
-    -#         %input(type="checkbox") Include Reviews
-    -# .form-group
-    -#   .row.average_rating_label Average Rating
-    -#   %label.col-xs-1.control-label(for="rating_from") From:
-    -#   .col-xs-2
-    -#     %select.form-control(id="rating_from")
-    -#       %option -
-    -#       - (10..50).map { |num| num / 10.0 }.each do |number|
-    -#         %option{ value: number }= number
-    -#   %label.col-xs-1.control-label(for="rating_to") To:
-    -#   .col-xs-2
-    -#     %select.form-control(id="rating_to")
-    -#       %option -
-    -#       - (10..50).map { |num| num / 10.0 }.each do |number|
-    -#         %option{ value: number }= number
+          .form-group
+            = label_tag "reviews", "Include Reviews"
+            = check_box_tag "reviews", 'y', params[:reviews] == 'y'
+          .form-group.clearfix
+            .col-xs-4.average_rating_label
+              Average Rating:
+            .col-xs-2.rating_from_label
+              = label_tag :rating_from, "From:", class: "control-label"
+            .col-xs-2.rating_from_select
+              = select_tag :rating_from, options_for_rating_filter(params[:rating_from]), include_blank: true, class: "form-control"
+            .col-xs-2.rating_to_label
+              = label_tag :rating_from, "To:", class: "control-label"
+            .col-xs-2.rating_to_select
+              = select_tag :rating_to, options_for_rating_filter(params[:rating_to]), include_blank: true, class: "form-control"
+          .form-group
+            = button_tag "Search", type: "submit", class: "btn btn-primary pull-right" do
+              %span.glyphicon.glyphicon-search
+              Search
   .row
     .col-xs-6
     %hr
@@ -52,3 +48,4 @@
               - unless video.reviews.count == 0
                 %footer.video_review
                   = video.reviews.first.content
+        %hr

@@ -6,17 +6,27 @@ section.advanced_search
 
   h2.results_count
     font-size: 24px
-    margin: 20px 0
+    padding: 20px
 
   form
     header
-      h1
-        font-size: 24px
-        margin-bottom: 20px
+      font-size: 24px
+      margin-bottom: 10px
     .average_rating_label
-      margin: 0 0 10px 16px
+      padding: 0
       font-size: 15px
       font-weight: bold
+    .rating_from_label
+      text-align: left
+      padding: 0 10px 0 10px
+    .rating_to_label
+      text-align: left
+      padding: 0 10px 0 10px
+    .rating_from_select
+      padding: 0px
+    .rating_to_select
+      padding: 0px
+    // for ui mockup
     label[for="rating_from"]
       text-align: left
       padding-right: 0
@@ -26,11 +36,12 @@ section.advanced_search
       padding: 7px 0
       width: 21px
   hr
-    border: 1px dotted #cecece
+    border-top: 1px solid #cecece
+    margin-left: 15px
+    margin-right: 15px
 
   article.video
     min-width: 1130px
-    border: 1px solid #cecece
     margin-bottom: 10px
     padding: 15px
     header
@@ -42,7 +53,6 @@ section.advanced_search
       position: relative
       figure
         padding: 0
-        border-right: 2px solid #cecece
         margin-right: 0
         max-width: 182px
       .video_body
