@@ -1,0 +1,51 @@
+%section.advanced_search.container
+  %form
+    %header
+      Advanced Search
+    .row
+      .col-xs-6
+        = form_tag advanced_search_videos_path, method: "get" do
+          .form-group
+            = search_field_tag "query", nil, class: "form-control", placeholder: "Search videos by title, description"
+          .form-group
+            = label_tag "reviews", "Include Reviews"
+            = check_box_tag "reviews", 'y', params[:reviews] == 'y'
+          .form-group.clearfix
+            .col-xs-4.average_rating_label
+              Average Rating:
+            .col-xs-2.rating_from_label
+              = label_tag :rating_from, "From:", class: "control-label"
+            .col-xs-2.rating_from_select
+              = select_tag :rating_from, options_for_rating_filter(params[:rating_from]), include_blank: true, class: "form-control"
+            .col-xs-2.rating_to_label
+              = label_tag :rating_from, "To:", class: "control-label"
+            .col-xs-2.rating_to_select
+              = select_tag :rating_to, options_for_rating_filter(params[:rating_to]), include_blank: true, class: "form-control"
+          .form-group
+            = button_tag "Search", type: "submit", class: "btn btn-primary pull-right" do
+              %span.glyphicon.glyphicon-search
+              Search
+  .row
+    .col-xs-6
+    %hr
+    -if @query
+      %h2.results_count Results: #{@results.count} videos found
+      - @results.each do |video|
+        %article.video.row
+          .video_data
+            %figure.col-xs-2
+              %img(src="#{video.small_cover_url}" alt="#{video.title}")
+            .video_body.col-xs-10
+              %header
+                %h3
+                  %em.label.label-highlight= video.title
+              %p.video_description
+                = video.description
+              %hr
+              .details
+                %span.average_rating Average rating: #{video.average_rating}
+                %span.reviews_count #{video.reviews.count} reviews
+              - unless video.reviews.count == 0
+                %footer.video_review
+                  = video.reviews.first.content
+        %hr

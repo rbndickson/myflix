@@ -37,6 +37,7 @@ Myflix::Application.routes.draw do
 
     collection do
       get 'search'
+      get 'advanced_search'
     end
   end
 
